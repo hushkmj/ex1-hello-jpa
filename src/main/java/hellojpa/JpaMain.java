@@ -19,27 +19,24 @@ public class JpaMain {
         tx.begin();
         //code
         try {
-             // insert
-//            Member member = new Member();
-//            member.setId(2L);
-//            member.setName("HelloB");
-//            em.persist(member);
-            // update
-//            Member findMember = em.find(Member.class, 1L);
-//            System.out.println("### findMember.id : " + findMember.getId());
-//            System.out.println("### findMember.name : " + findMember.getName());
-//            findMember.setName("HelloJPA");
+            //팀 저장
+            Team team = new Team();
+             team.setName("TeamA");
+             em.persist(team);
 
-            // JPQL (엔티티 객체를 대상으로 하는 쿼리)
-            List<Member> result = em.createQuery("select m from Member m", Member.class)
-                    .setFirstResult(5)
-                    .setMaxResults(8)
-                    .getResultList();
-            for (Member member : result) {
-                System.out.println("member.name: " + member.getName());
-            }
+             //회원 저장
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+
+            System.out.println("### findTeam: " + findTeam.getName());
 
             tx.commit();
+
         } catch (Exception e) {
             tx.rollback();
         } finally {
