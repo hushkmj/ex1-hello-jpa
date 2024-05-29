@@ -27,20 +27,28 @@ public class JpaMain {
             //회원 저장
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            team.addMember(member);
+//            em.flush();
+//            em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
+            Team findTeam = em.find(Team.class, team.getId()); //1차 개시
+            List<Member> members = findTeam.getMembers();
 
-            System.out.println("### members.size(): " + members.size());
-
+            System.out.println("========================");
             for (Member m : members) {
-                System.out.println("### Member: " + m.getUsername());
+                System.out.println(m.getUsername());
             }
+            System.out.println("========================");
+//            Member findMember = em.find(Member.class, member.getId());
+//            List<Member> members = findMember.getTeam().getMembers();
+//
+//            System.out.println("### members.size(): " + members.size());
+//
+//            for (Member m : members) {
+//                System.out.println("### Member: " + m.getUsername());
+//            }
 
             tx.commit();
 
